@@ -1,27 +1,26 @@
-# FrontEndDevsu
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.5.
+##Esta prueba está desarrollada en Angular 17. Validar tener instalado lo siguiente para que pueda hacer la revision sin problemas
 
-## Development server
+## nodejs LTS
+## npm
+## angular
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Clonar el repositorio
+`git clone https://github.com/edercabezas/eder-cortes.git`
+##Navegar a la carpeta clonada con la terminal
 
-## Code scaffolding
+## Instalación de dependencia 
+##Para instalar las dependencias luego de estar en la carpeta clonada 
+Correr:`npm install` o `npm ci` 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Pruebas unitarias
+##Para ver el alcance del coverage
+Correr:`ng test` o `ng test --code-coverage`
 
-## Build
+## Ejecutar el proyecto
+##Para ejecutar el proyecto en local solo
+Correr:`ng serve` para ejecutar el proyecto local `http://localhost:4200/`. Pegar esta URL en el navegador
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Compilación para despliegue a un servidor
+##Para desplegar en modo producción
+Correr: `ng build`
