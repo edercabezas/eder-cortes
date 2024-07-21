@@ -1,0 +1,14 @@
+<div class="container-modal">
+  <div class="container-modal__information">
+    <h3> {{ dataInformation.title }}</h3>
+  </div>
+  <div class="container-modal__center">
+    <hr />
+  </div>
+  <div class="container-modal__button">
+    <div class="container-form__body__button__option">
+      <button mat-flat-button color="warn" class="button__cancel" (click)="onNoClick()"> {{ dataInformation?.buttons?.cancel}}</button>
+      <button mat-flat-button color="primary" class="button__confirm" (click)="returnConfirm()"> {{ dataInformation?.buttons?.confirm}}</button>
+    </div>
+  </div>
+</div>

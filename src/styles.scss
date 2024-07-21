@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+ .mat-mdc-dialog-container .mdc-dialog__surface{
+   border-radius: 16px !important;
+ }
+
+ .mat-elevation-z8 {
+   box-shadow: none !important;
+ }
+
+
+.disabled-input {
+  .mat-mdc-text-field-wrapper {
+    pointer-events: none;
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+table {
+  thead {
+    background-color: #f4f6f9 !important;
+  }
+}

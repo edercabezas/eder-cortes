@@ -1,0 +1,51 @@
+.container-modal__information {
+  padding: 70px;
+  @media screen and (max-width: 667px) {
+    padding: 40px;
+
+  }
+  h3 {
+    font-size: 26px;
+    font-weight: 400;
+    text-align: center;
+  }
+}
+
+
+.container-form__body__button__option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 32px;
+  padding-right: 32px;
+  gap: 24px;
+  @media screen and (max-width: 667px) {
+    padding-top: 20px;
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 12px;
+
+  }
+
+
+  button {
+    width: 100%;
+    padding: 32px;
+    color: #00008b;
+    font-size: 18px;
+    font-weight: 500;
+
+
+  }
+
+  .button__cancel{
+    background-color: #d4d9dd !important;
+    border: 1px solid #d4d9dd !important;
+
+  }
+  .button__confirm {
+    background-color: #ffd740 !important;
+    border: 1px solid #ffd740 !important;
+    opacity: 0.7;
+  }
+}

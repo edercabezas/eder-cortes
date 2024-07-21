@@ -1,0 +1,108 @@
+
+
+
+<div class="container-form">
+  <div class="container__back" style="margin-bottom: 32px">
+    <app-go-back/>
+  </div>
+  <div class="container__form__all">
+
+    <div class="container-form__header">
+      <div class="container-form__header__title">
+        <h1> Formulario de Registro</h1>
+      </div>
+    </div>
+
+    <div class="container-form__center"></div>
+
+    <div class="container-form__body">
+
+      <form [formGroup]="registerForm" novalidate  class="form-login">
+
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline" [ngClass]="{'disabled-input': isDisabled}">
+              <mat-label>ID</mat-label>
+              <input matInput placeholder="ID" formControlName="id" (mouseout)="getVerificationID()" >
+            </mat-form-field>
+            <div *ngIf="registerForm.get('id')?.invalid && registerForm.get('id')?.touched"  class="container-form__body__validation">
+              <div *ngIf="registerForm.get('id')?.errors" class="error">ID no válido.</div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput placeholder="Tarjeta de crédito" formControlName="name">
+            </mat-form-field>
+            <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="container-form__body__validation">
+              <div *ngIf="registerForm.get('name')?.errors" class="error">El nombre es requerido.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Descripción</mat-label>
+              <input matInput placeholder="Descripción" formControlName="description">
+            </mat-form-field>
+            <div *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched"  class="container-form__body__validation">
+              <div *ngIf="registerForm.get('description')?.errors" class="error">Este campo es requerido!.</div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Logo</mat-label>
+              <input matInput placeholder="Logo" formControlName="logo">
+            </mat-form-field>
+            <div *ngIf="registerForm.get('logo')?.invalid && registerForm.get('logo')?.touched"  class="container-form__body__validation">
+              <div *ngIf="registerForm.get('logo')?.errors" class="error">Este campo es requerido.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-lg-6">
+
+
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha liberación</mat-label>
+              <input matInput [matDatepicker]="date_release" formControlName="date_release" (dateChange)="onDateChange($event)" >
+              <mat-datepicker-toggle matIconSuffix [for]="date_release" ></mat-datepicker-toggle>
+              <mat-datepicker #date_release ></mat-datepicker>
+            </mat-form-field>
+
+            <div *ngIf="registerForm.get('date_release')?.invalid && registerForm.get('date_release')?.touched"  class="container-form__body__validation">
+              <div *ngIf="registerForm.get('date_release')?.errors" class="error">Este campo es requerido.</div>
+            </div>
+
+          </div>
+          <div class="col-12 col-lg-6">
+
+
+            <mat-form-field appearance="outline" class="disabled-input" >
+              <mat-label>Fecha revisión</mat-label>
+              <input matInput [matDatepicker]="date_revision"  formControlName="date_revision"  >
+              <mat-datepicker-toggle matIconSuffix [for]="date_revision" ></mat-datepicker-toggle>
+              <mat-datepicker #date_revision></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </form>
+
+
+      <div class="container-form__body__button">
+        <div class="container-form__body__button__option">
+          <button mat-flat-button color="warn" class="button__clear" (click)="clearForm()">Reiniciar</button>
+          <button mat-flat-button color="primary" class="button__send" (click)="openCart()">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</div>

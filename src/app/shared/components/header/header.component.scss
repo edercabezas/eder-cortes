@@ -1,0 +1,29 @@
+
+header{
+
+
+  height: 100px;
+  padding: 1.5rem;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.5;
+    margin-bottom: 0 !important;
+    font-weight: 500;
+    color: #00008b;
+  }
+
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
+  .container-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+

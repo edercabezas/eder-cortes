@@ -1,0 +1,19 @@
+.container-back {
+  button {
+    display:flex ;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #00008b;
+    color:  #00008b;
+    font-weight: 500;
+    font-size: 15px;
+    img {
+      margin-right: 10px;
+      height: 30px;
+      width: 30px;
+    }
+  }
+}
