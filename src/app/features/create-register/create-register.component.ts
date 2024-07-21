@@ -1,23 +1,24 @@
 import {Component, OnInit} from '@angular/core';
-import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatIcon} from "@angular/material/icon";
-import {MatInput} from "@angular/material/input";
-import {NgClass, NgIf} from "@angular/common";
-import {MatButton} from "@angular/material/button";
-import {CrudService} from "../../core/services/crud.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ModalInfoComponent} from "../../shared/modals/modal-info/modal-info.component";
+import {MatIcon} from '@angular/material/icon';
+import {MatInput} from '@angular/material/input';
+import {NgClass, NgIf} from '@angular/common';
+import {MatButton} from '@angular/material/button';
+import {CrudService} from '../../core/services/crud.service';
+import {MatDialog} from '@angular/material/dialog';
+import {ModalInfoComponent} from '../../shared/modals/modal-info/modal-info.component';
 import {
   MatDatepicker,
-  MatDatepickerInput, MatDatepickerInputEvent,
+  MatDatepickerInput,
+  MatDatepickerInputEvent,
   MatDatepickerModule,
   MatDatepickerToggle
-} from "@angular/material/datepicker";
-import {provideNativeDateAdapter} from "@angular/material/core";
-import {AlertService} from "../../core/services/alert.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {GoBackComponent} from "../../shared/components/go-back/go-back.component";
+} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {AlertService} from '../../core/services/alert.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {LoadingComponent} from "../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'app-create-register',
@@ -37,20 +38,17 @@ import {GoBackComponent} from "../../shared/components/go-back/go-back.component
     MatDatepickerModule,
     FormsModule,
     NgClass,
-    GoBackComponent
+    LoadingComponent,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './create-register.component.html',
   styleUrl: './create-register.component.scss'
 })
 export default class CreateRegisterComponent implements OnInit {
-  registerForm!: FormGroup;
-  idRegister: any;
-  isDisabled: boolean;
-
-  year: string;
-  month: string;
-  day: string;
+  public registerForm!: FormGroup;
+  public idRegister: any;
+  public isDisabled: boolean;
+  public loading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,13 +56,10 @@ export default class CreateRegisterComponent implements OnInit {
     public dialog: MatDialog,
     private alert: AlertService,
     private _activatedRoute: ActivatedRoute,
-    private router: Router) {
+    public router: Router) {
 
-
-    this.year = '';
-    this.month = '';
-    this.day  = '';
     this.isDisabled = false;
+    this.loading = false;
 
   }
 
@@ -75,13 +70,26 @@ export default class CreateRegisterComponent implements OnInit {
   }
 
   /**
-   * MEtodo encargado de la creación de registros
+   * Metodo encargado de la creación de registros
    */
   public createRegister() {
+    this.loading = true;
     this.registerForm.controls['date_release'].setValue(this.registerForm?.controls['date_release']?.value.toISOString())
-    this.crud.postData(this.registerForm.value).subscribe({
-      next: () => this.alert.showToasterFull('Registro guardado exitosamente'),
-      error: () => this.alert.showToasterError('Error al guardado el registro')
+    this.crud?.postData(this.registerForm?.value)?.subscribe({
+      next: () => {
+
+        setTimeout( () => {
+          this.loading = false;
+          this.alert?.showToasterFull('Registro guardado exitosamente');
+          this.clearForm();
+        }, 2000);
+
+
+      },
+      error: () => {
+        this.alert?.showToasterError('Error al guardado el registro')
+        this.loading = false;
+      }
     });
 
   }
@@ -91,12 +99,13 @@ export default class CreateRegisterComponent implements OnInit {
    */
   openCart(): void {
 
-    if (!this.registerForm.valid) {
+    if (!this.registerForm?.valid) {
+      this.registerForm.markAllAsTouched();
       this.alert.showToasterWarning('Todos los campos son requeridos para continuar');
       return;
     }
     const message: any = this.idRegister ? 'Quiere editar el registro ' : 'Esta seguro que quiere crear este registro '
-    const dialog: any = this.dialog.open(ModalInfoComponent, {
+    const dialog = this.dialog?.open(ModalInfoComponent, {
       width: '700px',
       height: '350px',
       data: {
@@ -109,7 +118,7 @@ export default class CreateRegisterComponent implements OnInit {
       }
     });
 
-    dialog.afterClosed().subscribe({
+    dialog?.afterClosed()?.subscribe({
       next: (response: any): void => {
         if (response) {
           if (this.idRegister) {
@@ -128,14 +137,14 @@ export default class CreateRegisterComponent implements OnInit {
    */
   public getVerificationID(): void {
     const id = this.registerForm.controls['id'].value;
-    if ( id.length < 3) {
+    if (id.length < 3) {
       return;
     }
     if (this.idRegister) {
       return;
     }
 
-    this.crud.getById(id, '/verification').then((response: any) => {
+    this.crud?.getById(id, '/verification')?.then((response: any) => {
 
       if (response) {
         this.alert.showToasterError('Este ID ya esta en uso');
@@ -175,10 +184,18 @@ export default class CreateRegisterComponent implements OnInit {
    * Metodo para hacer la actualización del registro
    */
   updateRegister(): void {
+    this.loading = true;
+    this.crud?.put(this.registerForm?.value, this.idRegister)?.then(() => {
 
-    this.crud.put(this.registerForm.value, this.idRegister).then(() =>  {
-      this.alert.showToasterFull('Registro actualizado exitosamente');
+      setTimeout( () => {
+        this.loading = false;
+        this.alert.showToasterFull('Registro actualizado exitosamente');
+        this.clearForm();
+      }, 2000);
+
+
     }).catch(() => {
+      this.loading = false;
       this.alert.showToasterError('Error al actualizar el registro');
     })
   }
@@ -190,7 +207,7 @@ export default class CreateRegisterComponent implements OnInit {
   public clearForm(): void {
 
     if (this.idRegister) {
-     this.navigate();
+      this.navigate();
     }
 
 
@@ -208,7 +225,7 @@ export default class CreateRegisterComponent implements OnInit {
    * NAvegar a la pagina inicial o al listado
    */
   navigate(): void {
-    this.router.navigate(['/']);
+    this.router?.navigate(['/']);
   }
 
   /**
@@ -219,12 +236,11 @@ export default class CreateRegisterComponent implements OnInit {
 
     const selectedDate: Date | any = event.value;
 
-    this.year = selectedDate.getFullYear() + 1;
-    this.month = selectedDate.getMonth() + 1;
-    this.day = selectedDate.getDate();
+    const year = selectedDate.getFullYear() + 1;
+    const month = selectedDate.getMonth() + 1;
+    const day = selectedDate.getDate();
 
-    const  dataRevision: string = `${this.year}-${this.month.toString().length ===1 ? '0'+this.month : this.month}-${this.day}`.toString();
-
+    const dataRevision: string = `${year}-${month.toString().length === 1 ? '0' + month : month}-${day.toString().length === 1 ? '0' +day : day}`.toString();
     this.registerForm.controls['date_revision'].setValue(dataRevision);
   }
 
@@ -236,9 +252,9 @@ export default class CreateRegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      description: ['',[Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]],
       logo: ['', Validators.required],
-      date_release: ['', Validators.required ],
+      date_release: ['', Validators.required],
       date_revision: [''],
     });
   }

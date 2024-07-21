@@ -1,16 +1,17 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
-import {MatButton, MatIconButton} from "@angular/material/button";
-import {FormsModule} from "@angular/forms";
-import {CrudService} from "../../core/services/crud.service";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatIcon} from "@angular/material/icon";
-import {Router} from "@angular/router";
-import {DatePipe} from "@angular/common";
-import {AlertService} from "../../core/services/alert.service";
-import {ModalInfoComponent} from "../../shared/modals/modal-info/modal-info.component";
-import {MatDialog} from "@angular/material/dialog";
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import {CrudService} from '../../core/services/crud.service';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatIcon} from '@angular/material/icon';
+import {Router} from '@angular/router';
+import {DatePipe} from '@angular/common';
+import {AlertService} from '../../core/services/alert.service';
+import {ModalInfoComponent} from '../../shared/modals/modal-info/modal-info.component';
+import {MatDialog} from '@angular/material/dialog';
+import {LoadingComponent} from "../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'app-home',
@@ -23,19 +24,20 @@ import {MatDialog} from "@angular/material/dialog";
     MatMenuModule,
     MatIcon,
     MatIconButton,
-    DatePipe
+    DatePipe,
+    LoadingComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export default class HomeComponent implements OnInit {
 
-  dataSource: any;
-  totalProducts: number = 0;
+  public dataSource: any;
+  public totalProducts: number = 0;
   public selectIndexTable: number | undefined;
   public inputForm: string;
-
-  tableConventionsColumns: string[];
+  public loading: boolean;
+  public tableConventionsColumns: string[];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -44,8 +46,10 @@ export default class HomeComponent implements OnInit {
     private router: Router,
     private alert: AlertService,
     public dialog: MatDialog) {
+
     this.inputForm = '';
     this.tableConventionsColumns = [];
+    this.loading = false;
   }
 
   ngOnInit(): void {
@@ -58,10 +62,10 @@ export default class HomeComponent implements OnInit {
    */
 
   getDataRegister(): void {
-    this.crud.readData('products').then((response: any) => {
-      this.dataSource = new MatTableDataSource<any>(response.data);
+    this.crud?.readData()?.then((response: any) => {
+      this.dataSource = new MatTableDataSource<any>(response?.data);
       this.dataSource.paginator = this.paginator;
-      this.totalProducts = response.data.length;
+      this.totalProducts = response?.data?.length;
 
     }).catch((error: any) => {
       console.log(error)
@@ -72,7 +76,7 @@ export default class HomeComponent implements OnInit {
    * Metodo que em envía a la pantalla de crear nuevo registro
    */
   public createNewRegister(): void {
-    this.router.navigate(['create-register'])
+    this.router?.navigate(['create-register'])
   }
 
   /**
@@ -80,7 +84,7 @@ export default class HomeComponent implements OnInit {
    * @param code
    */
   public editRegister(code: string): void {
-    this.router.navigate(['edit-register', code])
+    this.router?.navigate(['edit-register', code])
   }
 
   /**
@@ -88,15 +92,19 @@ export default class HomeComponent implements OnInit {
    * @param code
    */
   public deleteRegister(code: string): void {
-
-    this.crud.delete(code).subscribe({
+    this.loading = true;
+    this.crud?.delete(code)?.subscribe({
       next: () => {
-        this.alert.showToasterFull('Registro eliminado exitosamente');
         setTimeout(() => {
+          this.loading = false;
           this.getDataRegister();
-        }, 2000)
+        }, 2000);
+        this.alert.showToasterFull('Registro eliminado exitosamente');
       },
-      error: () => this.alert.showToasterError('Error al eliminar el registro')
+      error: () => {
+        this.loading = false;
+        this.alert.showToasterError('Error al eliminar el registro')
+      }
     });
   }
 
@@ -117,7 +125,6 @@ export default class HomeComponent implements OnInit {
     } else {
       this.getDataRegister();
     }
-
   }
 
   /**
@@ -145,7 +152,6 @@ export default class HomeComponent implements OnInit {
         }
       }
     });
-
   }
 
   /**

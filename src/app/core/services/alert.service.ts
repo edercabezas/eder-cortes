@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 
 @Injectable({
@@ -6,7 +6,9 @@ import {ToastrService} from "ngx-toastr";
 })
 export class AlertService {
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService) {
+  }
+
   showToasterFull(mensaje: string): void {
     this.toastr.success(mensaje);
   }

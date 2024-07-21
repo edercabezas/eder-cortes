@@ -1,9 +1,9 @@
-
-
-
 <div class="container-form">
   <div class="container__back" style="margin-bottom: 32px">
-    <app-go-back/>
+    <button (click)="navigate()" mat-stroked-button>
+      <img alt="" src="assets/img/list/back.png">
+      <span>Volver</span>
+    </button>
   </div>
   <div class="container__form__all">
 
@@ -17,24 +17,26 @@
 
     <div class="container-form__body">
 
-      <form [formGroup]="registerForm" novalidate  class="form-login">
+      <form [formGroup]="registerForm" class="form-login" novalidate>
 
         <div class="row">
           <div class="col-12 col-lg-6">
-            <mat-form-field appearance="outline" [ngClass]="{'disabled-input': isDisabled}">
+            <mat-form-field [ngClass]="{'disabled-input': isDisabled}" appearance="outline">
               <mat-label>ID</mat-label>
-              <input matInput placeholder="ID" formControlName="id" (mouseout)="getVerificationID()" >
+              <input (mouseout)="getVerificationID()" formControlName="id" matInput placeholder="ID">
             </mat-form-field>
-            <div *ngIf="registerForm.get('id')?.invalid && registerForm.get('id')?.touched"  class="container-form__body__validation">
+            <div *ngIf="registerForm.get('id')?.invalid && registerForm.get('id')?.touched"
+                 class="container-form__body__validation">
               <div *ngIf="registerForm.get('id')?.errors" class="error">ID no válido.</div>
             </div>
           </div>
           <div class="col-12 col-lg-6">
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
-              <input matInput placeholder="Tarjeta de crédito" formControlName="name">
+              <input formControlName="name" matInput placeholder="Tarjeta de crédito">
             </mat-form-field>
-            <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="container-form__body__validation">
+            <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+                 class="container-form__body__validation">
               <div *ngIf="registerForm.get('name')?.errors" class="error">El nombre es requerido.</div>
             </div>
           </div>
@@ -44,18 +46,20 @@
           <div class="col-12 col-lg-6">
             <mat-form-field appearance="outline">
               <mat-label>Descripción</mat-label>
-              <input matInput placeholder="Descripción" formControlName="description">
+              <input formControlName="description" matInput placeholder="Descripción">
             </mat-form-field>
-            <div *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched"  class="container-form__body__validation">
+            <div *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched"
+                 class="container-form__body__validation">
               <div *ngIf="registerForm.get('description')?.errors" class="error">Este campo es requerido!.</div>
             </div>
           </div>
           <div class="col-12 col-lg-6">
             <mat-form-field appearance="outline">
               <mat-label>Logo</mat-label>
-              <input matInput placeholder="Logo" formControlName="logo">
+              <input formControlName="logo" matInput placeholder="Logo">
             </mat-form-field>
-            <div *ngIf="registerForm.get('logo')?.invalid && registerForm.get('logo')?.touched"  class="container-form__body__validation">
+            <div *ngIf="registerForm.get('logo')?.invalid && registerForm.get('logo')?.touched"
+                 class="container-form__body__validation">
               <div *ngIf="registerForm.get('logo')?.errors" class="error">Este campo es requerido.</div>
             </div>
           </div>
@@ -67,12 +71,14 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Fecha liberación</mat-label>
-              <input matInput [matDatepicker]="date_release" formControlName="date_release" (dateChange)="onDateChange($event)" >
-              <mat-datepicker-toggle matIconSuffix [for]="date_release" ></mat-datepicker-toggle>
-              <mat-datepicker #date_release ></mat-datepicker>
+              <input (dateChange)="onDateChange($event)" [matDatepicker]="date_release" formControlName="date_release"
+                     matInput>
+              <mat-datepicker-toggle [for]="date_release" matIconSuffix></mat-datepicker-toggle>
+              <mat-datepicker #date_release></mat-datepicker>
             </mat-form-field>
 
-            <div *ngIf="registerForm.get('date_release')?.invalid && registerForm.get('date_release')?.touched"  class="container-form__body__validation">
+            <div *ngIf="registerForm.get('date_release')?.invalid && registerForm.get('date_release')?.touched"
+                 class="container-form__body__validation">
               <div *ngIf="registerForm.get('date_release')?.errors" class="error">Este campo es requerido.</div>
             </div>
 
@@ -80,10 +86,10 @@
           <div class="col-12 col-lg-6">
 
 
-            <mat-form-field appearance="outline" class="disabled-input" >
+            <mat-form-field appearance="outline" class="disabled-input">
               <mat-label>Fecha revisión</mat-label>
-              <input matInput [matDatepicker]="date_revision"  formControlName="date_revision"  >
-              <mat-datepicker-toggle matIconSuffix [for]="date_revision" ></mat-datepicker-toggle>
+              <input [matDatepicker]="date_revision" formControlName="date_revision" matInput>
+              <mat-datepicker-toggle [for]="date_revision" matIconSuffix></mat-datepicker-toggle>
               <mat-datepicker #date_revision></mat-datepicker>
             </mat-form-field>
           </div>
@@ -94,8 +100,8 @@
 
       <div class="container-form__body__button">
         <div class="container-form__body__button__option">
-          <button mat-flat-button color="warn" class="button__clear" (click)="clearForm()">Reiniciar</button>
-          <button mat-flat-button color="primary" class="button__send" (click)="openCart()">Enviar</button>
+          <button (click)="clearForm()" class="button__clear" color="warn" mat-flat-button>Reiniciar</button>
+          <button (click)="openCart()" class="button__send" color="primary" mat-flat-button>Enviar</button>
         </div>
       </div>
     </div>
@@ -104,5 +110,8 @@
   </div>
 
 
-
 </div>
+@if (loading) {
+  <app-loading/>
+}
+
